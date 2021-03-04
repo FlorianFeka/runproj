@@ -13,34 +13,35 @@ Program execution: `runproj <set-name>` or `runproj <set1-name> <set2-name>`
 
 ```json
 [
-	{
-		"name": "<set1-name>",
-		"programs": [
-			{
-				"program": "<program1-url>",
-				"path": "<path1>"
-			},
-			{
-				"program": "<program2-url>",
-				"path": "<path2>"
-			}
-		]
-	},
-	{
-		"name": "<set2-name>",
-		"programs": [
-			{
-				"program": "<program3-url>",
-				"path": "<path3>"
-			},
-			{
-				"program": "<program4-url>",
-				"path": "<path4>"
-			}
-		]
-	}
+    {
+        "name": "<set1-name>",
+        "programs": [
+            {
+                "program": "<program1-url>",
+                "path": "<path1>"
+            },
+            {
+                "program": "<program2-url>",
+                "path": "<path2>"
+            }
+        ]
+    },
+    {
+        "name": "<set2-name>",
+        "programs": [
+            {
+                "program": "<program3-url>",
+                "path": "<path3>"
+            },
+            {
+                "program": "<program4-url>",
+                "path": "<path4>"
+            }
+        ]
+    }
 ]
 ```
 
 #### Example:
+
 TBD
