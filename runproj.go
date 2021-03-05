@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 type set struct {
@@ -18,7 +19,24 @@ type program struct {
 }
 
 func main() {
-	confFile, err := os.Open("./.ignore/runproj.json")
+	args := os.Args[1:]
+	
+	sets := getConfigContent()
+
+	for i:=0; i < len(sets); i++ {
+		if _, exists := find(args, sets[i].Name); exists == false {
+			continue
+		}
+		fmt.Println(sets[i].Name)
+		for j:=0; j<len(sets[i].Programs) ;j++ {
+			fmt.Println(sets[i].Programs[j].ProgramPath)
+			fmt.Println(sets[i].Programs[j].Path)
+		}
+	}
+}
+
+func getConfigContent() []set{
+	confFile, err := os.Open("./.ignore/runproj.json") 
 
 	if err != nil {
 		fmt.Println(err)
@@ -27,16 +45,17 @@ func main() {
 	defer confFile.Close()
 	
 	byteConf, _ := ioutil.ReadAll(confFile)
+	var sets []set
 
-	var set []set
+	json.Unmarshal(byteConf, &sets)
+	return sets
+}
 
-	json.Unmarshal(byteConf, &set)
-
-	for i:=0; i < len(set); i++ {
-		fmt.Println(set[i].Name)
-		for j:=0; j<len(set[i].Programs) ;j++ {
-			fmt.Println(set[i].Programs[j].ProgramPath)
-			fmt.Println(set[i].Programs[j].Path)
+func find(arr []string, str string) (string, bool) {
+	for _, a := range arr {
+		if strings.EqualFold(a, str) {
+			return a, true
 		}
 	}
+	return "", false
 }
