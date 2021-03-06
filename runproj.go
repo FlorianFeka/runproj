@@ -45,7 +45,7 @@ func executeSelectedSets(sets []set, selectedSets []string) {
 			if err := cmd.Run(); err != nil {
 				fmt.Println(err)
 			} else {
-				fmt.Println("Opend Project succesfully!")
+				fmt.Println("Opened Program succesfully!")
 			}
 		}
 	}
