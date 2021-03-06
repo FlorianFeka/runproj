@@ -28,19 +28,19 @@ func main() {
 }
 
 func executeSelectedSets(sets []set, selectedSets []string) {
-	for i:=0; i < len(sets); i++ {
-		if _, exists := find(selectedSets, sets[i].Name); exists == false {
+	for _, set := range sets {
+		if _, exists := find(selectedSets, set.Name); exists == false {
 			continue
 		}
-		fmt.Println(sets[i].Name)
-		for j:=0; j<len(sets[i].Programs) ;j++ {
-			fmt.Println("\t"+sets[i].Programs[j].ProgramPath)
-			for k:=0; k<len(sets[i].Programs[j].Arguments); k++ {
-				fmt.Println("\t\t"+sets[i].Programs[j].Arguments[k])
+		fmt.Println(set.Name)
+		for _, program := range set.Programs {
+			fmt.Println("\t"+program.ProgramPath)
+			for _, argument := range program.Arguments {
+				fmt.Println("\t\t"+argument)
 			}
 			cmd := exec.Command(
-				sets[i].Programs[j].ProgramPath,
-				sets[i].Programs[j].Arguments...
+				program.ProgramPath,
+				program.Arguments...
 			)
 			if err := cmd.Run(); err != nil {
 				fmt.Println(err)
