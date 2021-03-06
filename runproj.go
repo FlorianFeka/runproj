@@ -1,15 +1,10 @@
 package main
 
-import (
-	"os"
-)
-
-
 func main() {
-	args := os.Args[1:]
-	
-	sets := GetConfigContent()
+	StartAPI()
+	// args := os.Args[1:]
 
-	ExecuteSelectedSets(sets, args)
+	// sets := GetConfigContent()
+
+	// ExecuteSelectedSets(sets, args)
 }
-
