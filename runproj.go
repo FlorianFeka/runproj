@@ -24,8 +24,12 @@ func main() {
 	
 	sets := getConfigContent()
 
+	executeSelectedSets(sets, args)
+}
+
+func executeSelectedSets(sets []set, selectedSets []string) {
 	for i:=0; i < len(sets); i++ {
-		if _, exists := find(args, sets[i].Name); exists == false {
+		if _, exists := find(selectedSets, sets[i].Name); exists == false {
 			continue
 		}
 		fmt.Println(sets[i].Name)
