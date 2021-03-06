@@ -18,11 +18,11 @@ Program execution: `runproj <set-name>` or `runproj <set1-name> <set2-name>`
         "programs": [
             {
                 "program": "<program1-url>",
-                "path": "<path1>"
+                "arguments": ["<argument1>"]
             },
             {
                 "program": "<program2-url>",
-                "path": "<path2>"
+                "arguments": ["<argument2>", "<argument3>"]
             }
         ]
     },
@@ -31,11 +31,11 @@ Program execution: `runproj <set-name>` or `runproj <set1-name> <set2-name>`
         "programs": [
             {
                 "program": "<program3-url>",
-                "path": "<path3>"
+                "arguments": ["<argument4>"]
             },
             {
                 "program": "<program4-url>",
-                "path": "<path4>"
+                "arguments": ["<argument5>", "<argument6>"]
             }
         ]
     }
