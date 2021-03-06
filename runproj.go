@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -32,6 +33,15 @@ func main() {
 			fmt.Println("\t"+sets[i].Programs[j].ProgramPath)
 			for k:=0; k<len(sets[i].Programs[j].Arguments); k++ {
 				fmt.Println("\t\t"+sets[i].Programs[j].Arguments[k])
+			}
+			cmd := exec.Command(
+				sets[i].Programs[j].ProgramPath,
+				sets[i].Programs[j].Arguments...
+			)
+			if err := cmd.Run(); err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("Opend Project succesfully!")
 			}
 		}
 	}
