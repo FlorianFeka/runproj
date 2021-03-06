@@ -15,7 +15,7 @@ type set struct {
 
 type program struct {
 	ProgramPath string `json:"program"`
-	Path string `json:"path"`
+	Arguments []string `json:"arguments"`
 }
 
 func main() {
@@ -29,8 +29,10 @@ func main() {
 		}
 		fmt.Println(sets[i].Name)
 		for j:=0; j<len(sets[i].Programs) ;j++ {
-			fmt.Println(sets[i].Programs[j].ProgramPath)
-			fmt.Println(sets[i].Programs[j].Path)
+			fmt.Println("\t"+sets[i].Programs[j].ProgramPath)
+			for k:=0; k<len(sets[i].Programs[j].Arguments); k++ {
+				fmt.Println("\t\t"+sets[i].Programs[j].Arguments[k])
+			}
 		}
 	}
 }
