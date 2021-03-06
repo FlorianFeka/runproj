@@ -44,4 +44,39 @@ Program execution: `runproj <set-name>` or `runproj <set1-name> <set2-name>`
 
 #### Example:
 
-TBD
+```json
+[
+    {
+        "name": "timeo flutter",
+        "programs": [
+            {
+                "program": "C:\\Users\\Feka\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+                "arguments": ["D:\\2_Projekte\\Flutter\\timeo"]
+            },
+            {
+                "program": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+                "arguments": [
+                    "--new-window",
+                    "https://github.com/FlorianFeka/timeo-app"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "timeo angular",
+        "programs": [
+            {
+                "program": "C:\\Users\\Feka\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+                "arguments": ["D:\\2_Projekte\\Javascript\\Angular\\timeo"]
+            },
+            {
+                "program": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+                "arguments": [
+                    "--new-window",
+                    "https://github.com/FlorianFeka/timeo"
+                ]
+            }
+        ]
+    }
+]
+```
