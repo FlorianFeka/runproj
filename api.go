@@ -8,7 +8,9 @@ import (
 func StartAPI(){
 	app := fiber.New()
 
-	app.Get("/api/sets", func(c *fiber.Ctx) error {
+	api := app.Group("/api")
+
+	api.Get("/sets", func(c *fiber.Ctx) error {
 		sets := GetConfigContent()
 		return c.JSON(sets)
 	})
