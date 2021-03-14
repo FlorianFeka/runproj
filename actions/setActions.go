@@ -1,4 +1,4 @@
-package main
+package actions
 
 import (
 	"encoding/json"
@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+
+	"github.com/FlorianFeka/runproj/utils"
 )
 
 // Set has a name and a number of programs that should execute
@@ -23,7 +25,7 @@ type Program struct {
 // ExecuteSelectedSets executes a set of selected sets
 func ExecuteSelectedSets(sets []Set, selectedSets []string) {
 	for _, set := range sets {
-		if _, exists := Find(selectedSets, set.Name); exists == false {
+		if _, exists := utils.Find(selectedSets, set.Name); exists == false {
 			continue
 		}
 		fmt.Println(set.Name)

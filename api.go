@@ -4,6 +4,15 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func main(){
+	StartAPI()
+	// args := os.Args[1:]
+
+	// sets := GetConfigContent()
+
+	// ExecuteSelectedSets(sets, args
+}
+
 // StartAPI API for runproj
 func StartAPI(){
 	app := fiber.New()
