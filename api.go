@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/FlorianFeka/runproj/actions"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -20,7 +21,7 @@ func StartAPI(){
 	api := app.Group("/api")
 
 	api.Get("/sets", func(c *fiber.Ctx) error {
-		sets := GetConfigContent()
+		sets := actions.GetConfigContent()
 		return c.JSON(sets)
 	})
 	
