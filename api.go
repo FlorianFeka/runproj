@@ -2,11 +2,13 @@ package main
 
 import (
 	"github.com/FlorianFeka/runproj/actions"
+	"github.com/FlorianFeka/runproj/data"
 	"github.com/gofiber/fiber/v2"
 )
 
 func main(){
-	StartAPI()
+	data.TestDB()
+	// StartAPI()
 	// args := os.Args[1:]
 
 	// sets := GetConfigContent()
