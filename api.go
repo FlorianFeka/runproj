@@ -7,7 +7,7 @@ import (
 )
 
 func main(){
-	data.TestDB()
+	data.CreateDatabase()
 	// StartAPI()
 	// args := os.Args[1:]
 
