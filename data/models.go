@@ -10,14 +10,14 @@ type Program struct {
 	Id          int `pg:",pk"`
 	Name        string
 	ProgramPath string
-	Arguments   []*Argument `pg:"rel:has-many"`
 }
 
 type Argument struct {
-	Id        int `pg:",pk"`
-	Argument  string
-	ProgramId int
-	Program   *Program `pg:"rel:has-one"`
+	Id           int `pg:",pk"`
+	Argument     string
+	Order        int
+	ProgramSetId int
+	ProgramSet   *ProgramSet `pg:"rel:has-one"`
 }
 
 type ProgramSet struct {
@@ -28,4 +28,5 @@ type ProgramSet struct {
 	Program         *Program `pg:"rel:has-one"`
 	Monitor         int
 	SnappedPosition string
+	Arguments       []*Argument `pg:"rel:has-many"`
 }
