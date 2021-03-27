@@ -80,3 +80,10 @@ Program execution: `runproj <set-name>` or `runproj <set1-name> <set2-name>`
     }
 ]
 ```
+
+### ToDo
+
+-   [ ] Set a database storage
+-   [ ] API endpoints for data
+-   [ ] API endpoints for execution
+-   [ ] Properly dockerize application
