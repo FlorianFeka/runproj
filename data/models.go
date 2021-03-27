@@ -3,7 +3,7 @@ package data
 type Set struct {
 	Id          int `pg:",pk"`
 	Name        string
-	ProgramSets []*ProgramSet `pg:"rel:has-many"`
+	ProgramSets []*ProgramSet `pg:"rel:has-many" json:"-"`
 }
 
 type Program struct {

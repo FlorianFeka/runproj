@@ -7,10 +7,10 @@ import (
 func GetSets(db *pg.DB) ([]Set, error) {
 	var sets []Set
 	err := db.Model(&sets).
-		Relation("ProgramSets").
 		Select()
 	if err != nil {
 		return nil, err
 	}
+
 	return sets, nil
 }
