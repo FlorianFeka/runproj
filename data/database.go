@@ -40,7 +40,6 @@ func CreateDatabase(db *pg.DB) {
 	// defer rawDb.Close()
 
 	// DeleteExistingDatabase(rawDb)
-	// TODO add check for when db already exists
 	CreateSchema(db)
 	PopulateTestData(db)
 }
@@ -54,12 +53,33 @@ func CreateSchema(db *pg.DB) {
 	}
 
 	for _, model := range models {
-		err := db.Model(model).CreateTable(&orm.CreateTableOptions{
+		exists, err := db.Model(model).Exists()
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		if exists {
+			continue
+		}
+
+		modelName := fmt.Sprintf("%T", model)
+		fmt.Println("Create table:", modelName)
+
+		err = db.Model(model).CreateTable(&orm.CreateTableOptions{
 			FKConstraints: true,
 		})
 		if err != nil {
 			panic(err)
 		}
+	}
+}
+
+func DeleteExistingDatabase(db *sql.DB) {
+	_, err := db.Exec(`drop database %s WITH (FORCE);
+						create database %s;`, dbname, dbname)
+	if err != nil {
+		panic(err)
 	}
 }
 
@@ -149,14 +169,6 @@ func PopulateTestData(db *pg.DB) {
 		}}
 
 	_, err = db.Model(&arr).Insert()
-	if err != nil {
-		panic(err)
-	}
-}
-
-func DeleteExistingDatabase(db *sql.DB) {
-	_, err := db.Exec(`drop database %s WITH (FORCE);
-						create database %s;`, dbname, dbname)
 	if err != nil {
 		panic(err)
 	}
