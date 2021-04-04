@@ -1,89 +1,16 @@
 # runproj
 
-CLI tool to open predefinied sets of Programs for example VS Code - specific project, Github project page)
-
-The configuration should be given in `runproj.json`.
-TBD - where to save the `runproj.json`
-
-Program execution: `runproj <set-name>` or `runproj <set1-name> <set2-name>`
+API to open predefined programs on your computer.
+Define which programs are in a set, which arguments the programs should be called with,
+on which monitor to open the program and on which side to [snap](https://support.microsoft.com/en-us/windows/snap-your-windows-885a9b1e-a983-a3b1-16cd-c531795e6241#:~:text=Select%20the%20window%20you%20want,a%20corner%20after%20snapping%20it.) the program on a corner or edge.
 
 ---
 
-### Configuration
-
-```json
-[
-    {
-        "name": "<set1-name>",
-        "programs": [
-            {
-                "program": "<program1-url>",
-                "arguments": ["<argument1>"]
-            },
-            {
-                "program": "<program2-url>",
-                "arguments": ["<argument2>", "<argument3>"]
-            }
-        ]
-    },
-    {
-        "name": "<set2-name>",
-        "programs": [
-            {
-                "program": "<program3-url>",
-                "arguments": ["<argument4>"]
-            },
-            {
-                "program": "<program4-url>",
-                "arguments": ["<argument5>", "<argument6>"]
-            }
-        ]
-    }
-]
-```
-
-#### Example:
-
-```json
-[
-    {
-        "name": "timeo flutter",
-        "programs": [
-            {
-                "program": "C:\\Users\\Feka\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
-                "arguments": ["D:\\2_Projekte\\Flutter\\timeo"]
-            },
-            {
-                "program": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-                "arguments": [
-                    "--new-window",
-                    "https://github.com/FlorianFeka/timeo-app"
-                ]
-            }
-        ]
-    },
-    {
-        "name": "timeo angular",
-        "programs": [
-            {
-                "program": "C:\\Users\\Feka\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
-                "arguments": ["D:\\2_Projekte\\Javascript\\Angular\\timeo"]
-            },
-            {
-                "program": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
-                "arguments": [
-                    "--new-window",
-                    "https://github.com/FlorianFeka/timeo"
-                ]
-            }
-        ]
-    }
-]
-```
-
 ### ToDo
 
--   [ ] Set a database storage
+-   [x] Set a database storage
 -   [ ] API endpoints for data
 -   [ ] API endpoints for execution
--   [ ] Properly dockerize application
+-   [ ] Add swagger
+-   [x] Properly dockerize application
+-   [ ] Create phone app to communicate with api
