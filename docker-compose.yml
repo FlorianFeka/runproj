@@ -1,0 +1,20 @@
+version: "3.9"
+services:
+    runproj_database:
+        image: postgres
+        environment:
+            POSTGRES_USER: runproj
+            POSTGRES_PASSWORD: mysecretpassword
+            POSTGRES_DB: runproj
+        ports:
+            - "5432:5432"
+
+    runproj_api:
+        build: .
+        ports:
+            - "3000:3000"
+        command: ["./wait-for-postgres.sh", "runproj_database", "runproj"]
+        depends_on:
+            - runproj_database
+        links:
+            - runproj_database
