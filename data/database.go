@@ -11,11 +11,11 @@ import (
 )
 
 const (
-	host     = "localhost"
+	host     = "runproj_database"
 	port     = 5432
-	user     = "postgres"
+	user     = "runproj"
 	password = "mysecretpassword"
-	dbname   = "runproj_test"
+	dbname   = "runproj"
 )
 
 func GetPgDbConnection() (*pg.DB) {
