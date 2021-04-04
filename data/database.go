@@ -1,8 +1,10 @@
 package data
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
+	"time"
 
 	// init postgres driver
 	"github.com/go-pg/pg/v10"
@@ -16,15 +18,36 @@ const (
 	user     = "runproj"
 	password = "mysecretpassword"
 	dbname   = "runproj"
+	maxConnectTries = 3
 )
 
 func GetPgDbConnection() (*pg.DB) {
-	db := pg.Connect(&pg.Options{
-		Addr:     fmt.Sprintf("%s:%d", host, port),
-		User:     user,
-		Password: password,
-		Database: dbname,
-	})
+	tries := 1
+	connect: 
+	opt, err := pg.ParseURL(
+		fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", user, password, host, port, dbname))
+	if err != nil {
+		panic(err)
+	}
+	
+	ctx := context.Background()
+
+	db := pg.Connect(opt)
+
+	if err := db.Ping(ctx); err != nil {
+		if tries >= maxConnectTries {
+			panic(fmt.Sprintf(
+				"Couldn't connect to db '%s' after %d tries\n\n\n%s", 
+				dbname, 
+				tries, 
+				err.Error()))
+		}
+		fmt.Printf("Couldn't connect to db '%s'. Current try: %d\n", dbname, tries)
+		time.Sleep(5 * time.Second)
+		tries++
+		goto connect
+	}
+
 	return db
 }
 

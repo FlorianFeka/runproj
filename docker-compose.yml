@@ -13,7 +13,6 @@ services:
         build: .
         ports:
             - "3000:3000"
-        command: ["./wait-for-postgres.sh", "runproj_database", "runproj"]
         depends_on:
             - runproj_database
         links:
