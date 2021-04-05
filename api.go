@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/FlorianFeka/runproj/controllers"
 	"github.com/FlorianFeka/runproj/data"
 	"github.com/go-pg/pg/v10"
 	"github.com/gofiber/fiber/v2"
@@ -30,13 +31,7 @@ func StartAPI(db *pg.DB) {
 
 	api := app.Group("/api")
 
-	api.Get("/sets", func(c *fiber.Ctx) error {
-		sets, err := data.GetSets(db)
-		if err != nil {
-			return err
-		}
-		return c.JSON(sets)
-	})
+	controllers.RegisterControllers(api, db)
 
 	app.Listen(":3000")
 }
