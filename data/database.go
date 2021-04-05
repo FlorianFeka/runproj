@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"os"
+	"strconv"
 	"time"
 
 	// init postgres driver
@@ -12,8 +14,8 @@ import (
 	_ "github.com/lib/pq"
 )
 
-const (
-	host     = "runproj_database"
+var (
+	host     = "localhost"
 	port     = 5432
 	user     = "runproj"
 	password = "mysecretpassword"
@@ -22,6 +24,7 @@ const (
 )
 
 func GetPgDbConnection() (*pg.DB) {
+	SetConfFromEnv()
 	tries := 1
 	connect: 
 	opt, err := pg.ParseURL(
@@ -49,6 +52,41 @@ func GetPgDbConnection() (*pg.DB) {
 	}
 
 	return db
+}
+
+func SetConfFromEnv() {
+	dbHost, present := os.LookupEnv("DB_HOST")
+	if present {
+		host = dbHost
+	}
+	dbUser, present := os.LookupEnv("DB_USER")
+	if present {
+		user = dbUser
+	}
+	dbPassword, present := os.LookupEnv("DB_PASSWORD")
+	if present {
+		password = dbPassword
+	}
+	dbDatabase, present := os.LookupEnv("DB_DATABASE")
+	if present {
+		dbname = dbDatabase
+	}
+	dbPort, present := os.LookupEnv("DB_PORT")
+	if present {
+		dbIntPort, err := strconv.Atoi(dbPort)
+		if err != nil {
+			panic(err)
+		}
+		port = dbIntPort
+	}
+	maxTries, present := os.LookupEnv("DB_CONNECT_MAX_TRIES")
+	if present{
+		dbIntMaxTries, err := strconv.Atoi(maxTries)
+		if err != nil {
+			panic(err)
+		}
+		maxConnectTries = dbIntMaxTries
+	}
 }
 
 func CreateDatabase(db *pg.DB) {
