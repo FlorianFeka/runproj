@@ -6,8 +6,10 @@ import (
 )
 
 
-func RegisterControllers(api fiber.Router, db *pg.DB) {
+func RegisterSetControllers(app *fiber.App, db *pg.DB) {
+	api := app.Group("/api")
 	GetSets(api, db)
 	GetSet(api, db)
 	UpdateSet(api, db)
+	CreateSet(api, db)
 }

@@ -29,9 +29,8 @@ func main() {
 func StartAPI(db *pg.DB) {
 	app := fiber.New()
 
-	api := app.Group("/api")
 
-	controllers.RegisterControllers(api, db)
+	controllers.RegisterSetControllers(app, db)
 
 	app.Listen(":3000")
 }
