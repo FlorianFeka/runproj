@@ -22,7 +22,8 @@ var (
 	password = "mysecretpassword"
 	dbname   = "runproj"
 	maxConnectTries = 3
-	tablesExists = false
+	tablesExisted = false
+	debug = true
 )
 
 func GetPgDbConnection() (*pg.DB) {
@@ -52,15 +53,24 @@ func GetPgDbConnection() (*pg.DB) {
 		tries++
 		goto connect
 	}
-
-    db.AddQueryHook(pgdebug.DebugHook{
-        Verbose: true,
-    })
+	if debug {
+		db.AddQueryHook(pgdebug.DebugHook{
+			Verbose: true,
+		})
+	}
 
 	return db
 }
 
 func SetConfFromEnv() {
+	debugModeEnv, present := os.LookupEnv("DEBUG")
+	if present {
+		debugMode, err := strconv.ParseBool(debugModeEnv)
+		if err != nil {
+			panic(err)
+		}
+		debug = debugMode
+	}
 	dbHost, present := os.LookupEnv("DB_HOST")
 	if present {
 		host = dbHost
@@ -109,10 +119,9 @@ func CreateDatabase(db *pg.DB) {
 	// DeleteExistingDatabase(rawDb)
 	CreateSchema(db)
 
-	if tablesExists {
-		return
+	if !tablesExisted && debug {
+		PopulateTestData(db)
 	}
-	PopulateTestData(db)
 }
 
 func CreateSchema(db *pg.DB) {
@@ -131,7 +140,7 @@ func CreateSchema(db *pg.DB) {
 		}
 
 		if exists {
-			tablesExists = true
+			tablesExisted = true
 			continue
 		}
 

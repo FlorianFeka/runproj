@@ -9,4 +9,5 @@ import (
 func RegisterControllers(api fiber.Router, db *pg.DB) {
 	GetSets(api, db)
 	GetSet(api, db)
+	UpdateSet(api, db)
 }
