@@ -9,6 +9,7 @@ import (
 	"time"
 
 	// init postgres driver
+	"github.com/go-pg/pg/extra/pgdebug"
 	"github.com/go-pg/pg/v10"
 	"github.com/go-pg/pg/v10/orm"
 	_ "github.com/lib/pq"
@@ -21,6 +22,7 @@ var (
 	password = "mysecretpassword"
 	dbname   = "runproj"
 	maxConnectTries = 3
+	tablesExists = false
 )
 
 func GetPgDbConnection() (*pg.DB) {
@@ -50,6 +52,10 @@ func GetPgDbConnection() (*pg.DB) {
 		tries++
 		goto connect
 	}
+
+    db.AddQueryHook(pgdebug.DebugHook{
+        Verbose: true,
+    })
 
 	return db
 }
@@ -102,6 +108,10 @@ func CreateDatabase(db *pg.DB) {
 
 	// DeleteExistingDatabase(rawDb)
 	CreateSchema(db)
+
+	if tablesExists {
+		return
+	}
 	PopulateTestData(db)
 }
 
@@ -121,6 +131,7 @@ func CreateSchema(db *pg.DB) {
 		}
 
 		if exists {
+			tablesExists = true
 			continue
 		}
 
