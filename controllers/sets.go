@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/FlorianFeka/runproj/data"
 	"github.com/go-pg/pg/v10"
@@ -59,6 +60,25 @@ func UpdateSet(api fiber.Router, db *pg.DB) {
 		_, err = data.UpdateSet(set, db)
 		if err != nil {
 			c.Response().SetStatusCode(http.StatusBadRequest)
+			return err
+		}
+
+		return nil
+	})
+}
+
+func CreateSet(api fiber.Router, db *pg.DB) {
+	api.Post("/sets", func(c *fiber.Ctx) error {
+		set := &data.Set{}
+		err := json.Unmarshal(c.Request().Body(), set)
+		if err != nil ||  strings.TrimSpace(set.Name) == "" {
+			c.Response().SetStatusCode(http.StatusBadRequest)
+			return err
+		}
+
+		_, err = db.Model(set).Insert()
+		if err != nil {
+			c.Response().SetStatusCode(http.StatusInternalServerError)
 			return err
 		}
 
