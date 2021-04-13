@@ -15,6 +15,7 @@ func GetSets(api fiber.Router, db *pg.DB) {
 	api.Get("/sets", func(c *fiber.Ctx) error {
 		sets, err := data.GetSets(db)
 		if err != nil {
+			c.Response().SetStatusCode(http.StatusInternalServerError)
 			return err
 		}
 		return c.JSON(sets)
@@ -31,6 +32,7 @@ func GetSet(api fiber.Router, db *pg.DB) {
 
 		set, err := data.GetSet(id, db)
 		if err != nil {
+			c.Response().SetStatusCode(http.StatusInternalServerError)
 			return err
 		}
 
@@ -46,8 +48,8 @@ func UpdateSet(api fiber.Router, db *pg.DB) {
 			return err
 		}
 
-		set := &data.Set{}
-		err = json.Unmarshal(c.Request().Body(), set)
+		set := data.NewSet("")
+		err = json.Unmarshal(c.Request().Body(), &set)
 		if err != nil {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
@@ -57,7 +59,7 @@ func UpdateSet(api fiber.Router, db *pg.DB) {
 			return err
 		}
 		
-		_, err = data.UpdateSet(set, db)
+		_, err = data.UpdateSet(&set, db)
 		if err != nil {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
@@ -69,18 +71,40 @@ func UpdateSet(api fiber.Router, db *pg.DB) {
 
 func CreateSet(api fiber.Router, db *pg.DB) {
 	api.Post("/sets", func(c *fiber.Ctx) error {
-		set := &data.Set{}
-		err := json.Unmarshal(c.Request().Body(), set)
+		set := data.NewSet("")
+		err := json.Unmarshal(c.Request().Body(), &set)
 		if err != nil ||  strings.TrimSpace(set.Name) == "" {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
 		}
 
-		_, err = db.Model(set).Insert()
+		_, err = db.Model(&set).Insert()
 		if err != nil {
 			c.Response().SetStatusCode(http.StatusInternalServerError)
 			return err
 		}
+		
+		c.Response().SetStatusCode(http.StatusNoContent)
+
+		return nil
+	})
+}
+
+func DeleteSet(api fiber.Router, db *pg.DB) {
+	api.Delete("/sets/:id", func(c *fiber.Ctx) error {
+		id, err := strconv.Atoi(c.Params("id"))
+		if err != nil {
+			c.Response().SetStatusCode(http.StatusBadRequest)
+			return err
+		}
+
+		_, err = data.DeleteSet(id, db)
+		if err != nil {
+			c.Response().SetStatusCode(http.StatusInternalServerError)
+			return err
+		}
+
+		c.Response().SetStatusCode(http.StatusNoContent)
 
 		return nil
 	})
