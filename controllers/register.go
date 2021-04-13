@@ -12,4 +12,5 @@ func RegisterSetControllers(app *fiber.App, db *pg.DB) {
 	GetSet(api, db)
 	UpdateSet(api, db)
 	CreateSet(api, db)
+	DeleteSet(api, db)
 }

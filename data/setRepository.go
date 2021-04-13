@@ -8,6 +8,7 @@ import (
 func GetSets(db *pg.DB) ([]Set, error) {
 	var sets []Set
 	err := db.Model(&sets).
+		Where("is_active = ?", true).
 		Select()
 	if err != nil {
 		return nil, err
@@ -19,6 +20,7 @@ func GetSets(db *pg.DB) ([]Set, error) {
 func GetSet(id int, db *pg.DB) (*Set, error) {
 		set := &Set{}
 		err := db.Model(set).
+			Where("is_active = ?", true).
 			Where("? = ?", pg.Ident("id"), id).
 			Select()
 		if err != nil {
@@ -31,5 +33,14 @@ func UpdateSet(set *Set, db *pg.DB) (orm.Result, error) {
 	res, err := db.Model(set).
 		Where("? = ?", pg.Ident("id"), set.Id).
 		UpdateNotZero()
+	return res, err
+}
+
+func DeleteSet(id int, db *pg.DB) (orm.Result, error) {
+	set := Set{IsActive: false}
+	res, err := db.Model(&set).
+		Column("is_active").
+		Where("? = ?", pg.Ident("id"), id).
+		Update()
 	return res, err
 }

@@ -4,12 +4,29 @@ type Set struct {
 	Id          int `pg:",pk"`
 	Name        string
 	ProgramSets []*ProgramSet `pg:"rel:has-many" json:"-"`
+	IsActive    bool          `json:"-"`
+}
+
+func NewSet(name string) Set {
+	return Set{
+		Name:     name,
+		IsActive: true,
+	}
 }
 
 type Program struct {
 	Id          int `pg:",pk"`
 	Name        string
 	ProgramPath string
+	IsActive    bool `json:"-"`
+}
+
+func NewProgram(name, programPath string, isActive bool) Program {
+	return Program{
+		Name:        name,
+		ProgramPath: programPath,
+		IsActive:    isActive,
+	}
 }
 
 type Argument struct {
@@ -18,6 +35,19 @@ type Argument struct {
 	Order        int
 	ProgramSetId int
 	ProgramSet   *ProgramSet `pg:"rel:has-one"`
+	IsActive     bool        `json:"-"`
+}
+
+func NewArgument(
+	argument string,
+	order, programSetId int,
+	isActive bool) Argument {
+	return Argument{
+		Argument:     argument,
+		Order:        order,
+		ProgramSetId: programSetId,
+		IsActive:     isActive,
+	}
 }
 
 type ProgramSet struct {
@@ -29,4 +59,18 @@ type ProgramSet struct {
 	Monitor         int
 	SnappedPosition string
 	Arguments       []*Argument `pg:"rel:has-many"`
+	IsActive        bool        `json:"-"`
+}
+
+func NewProgramSet(
+	setId, programId, monitor int,
+	snappedPosition string,
+	isActive bool) ProgramSet {
+	return ProgramSet{
+		SetId:           setId,
+		ProgramId:       programId,
+		Monitor:         monitor,
+		SnappedPosition: snappedPosition,
+		IsActive:        isActive,
+	}
 }
