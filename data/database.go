@@ -16,26 +16,26 @@ import (
 )
 
 var (
-	host     = "localhost"
-	port     = 5432
-	user     = "runproj"
-	password = "mysecretpassword"
-	dbname   = "runproj"
+	host            = "localhost"
+	port            = 5432
+	user            = "runproj"
+	password        = "mysecretpassword"
+	dbname          = "runproj"
 	maxConnectTries = 3
-	tablesExisted = false
-	debug = true
+	tablesExisted   = false
+	debug           = true
 )
 
-func GetPgDbConnection() (*pg.DB) {
+func GetPgDbConnection() *pg.DB {
 	SetConfFromEnv()
 	tries := 1
-	connect: 
+connect:
 	opt, err := pg.ParseURL(
 		fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable", user, password, host, port, dbname))
 	if err != nil {
 		panic(err)
 	}
-	
+
 	ctx := context.Background()
 
 	db := pg.Connect(opt)
@@ -43,9 +43,9 @@ func GetPgDbConnection() (*pg.DB) {
 	if err := db.Ping(ctx); err != nil {
 		if tries >= maxConnectTries {
 			panic(fmt.Sprintf(
-				"Couldn't connect to db '%s' after %d tries\n\n\n%s", 
-				dbname, 
-				tries, 
+				"Couldn't connect to db '%s' after %d tries\n\n\n%s",
+				dbname,
+				tries,
 				err.Error()))
 		}
 		fmt.Printf("Couldn't connect to db '%s'. Current try: %d\n", dbname, tries)
@@ -96,7 +96,7 @@ func SetConfFromEnv() {
 		port = dbIntPort
 	}
 	maxTries, present := os.LookupEnv("DB_CONNECT_MAX_TRIES")
-	if present{
+	if present {
 		dbIntMaxTries, err := strconv.Atoi(maxTries)
 		if err != nil {
 			panic(err)
@@ -166,11 +166,13 @@ func DeleteExistingDatabase(db *sql.DB) {
 
 func PopulateTestData(db *pg.DB) {
 	timeoFlutter := Set{
-		Name: "timeo flutter",
+		Name:     "timeo flutter",
+		IsActive: true,
 	}
 
 	timeoAngular := Set{
-		Name: "timeo angular",
+		Name:     "timeo angular",
+		IsActive: true,
 	}
 
 	_, err := db.Model(&[]*Set{&timeoAngular, &timeoFlutter}).Insert()
@@ -181,11 +183,13 @@ func PopulateTestData(db *pg.DB) {
 	vsCode := Program{
 		Name:        "Visual Studio Code",
 		ProgramPath: "C:\\Users\\Feka\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe",
+		IsActive:    true,
 	}
 
 	chrome := Program{
 		Name:        "Chrome",
 		ProgramPath: "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+		IsActive:    true,
 	}
 
 	_, err = db.Model(&[]*Program{&vsCode, &chrome}).Insert()
@@ -196,21 +200,25 @@ func PopulateTestData(db *pg.DB) {
 	timeoFlutterVsCode := ProgramSet{
 		SetId:     timeoFlutter.Id,
 		ProgramId: vsCode.Id,
+		IsActive:  true,
 	}
 
 	timeoFlutterChrome := ProgramSet{
 		SetId:     timeoFlutter.Id,
 		ProgramId: chrome.Id,
+		IsActive:  true,
 	}
 
 	timeoAngularVsCode := ProgramSet{
 		SetId:     timeoAngular.Id,
 		ProgramId: vsCode.Id,
+		IsActive:  true,
 	}
 
 	timeoAngularChrome := ProgramSet{
 		SetId:     timeoAngular.Id,
 		ProgramId: chrome.Id,
+		IsActive:  true,
 	}
 
 	_, err = db.Model(&[]*ProgramSet{
@@ -218,7 +226,7 @@ func PopulateTestData(db *pg.DB) {
 		&timeoFlutterChrome,
 		&timeoAngularVsCode,
 		&timeoAngularChrome,
-		}).Insert()
+	}).Insert()
 	if err != nil {
 		panic(err)
 	}
@@ -227,26 +235,32 @@ func PopulateTestData(db *pg.DB) {
 		{
 			Argument:     "D:\\2_Projekte\\Flutter\\timeo",
 			ProgramSetId: timeoFlutterVsCode.Id,
+			IsActive:     true,
 		},
 		{
 			Argument:     "--new-window",
 			ProgramSetId: timeoFlutterChrome.Id,
+			IsActive:     true,
 		},
 		{
 			Argument:     "https://github.com/FlorianFeka/timeo-app",
 			ProgramSetId: timeoFlutterChrome.Id,
+			IsActive:     true,
 		},
 		{
-			Argument: "D:\\2_Projekte\\Javascript\\Angular\\timeo",
+			Argument:     "D:\\2_Projekte\\Javascript\\Angular\\timeo",
 			ProgramSetId: timeoAngularVsCode.Id,
+			IsActive:     true,
 		},
 		{
-			Argument: "--new-window",
+			Argument:     "--new-window",
 			ProgramSetId: timeoAngularVsCode.Id,
+			IsActive:     true,
 		},
 		{
-			Argument: "https://github.com/FlorianFeka/timeo",
+			Argument:     "https://github.com/FlorianFeka/timeo",
 			ProgramSetId: timeoAngularVsCode.Id,
+			IsActive:     true,
 		}}
 
 	_, err = db.Model(&arr).Insert()
