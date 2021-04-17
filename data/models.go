@@ -21,11 +21,11 @@ type Program struct {
 	IsActive    bool `json:"-"`
 }
 
-func NewProgram(name, programPath string, isActive bool) Program {
+func NewProgram(name, programPath string) Program {
 	return Program{
 		Name:        name,
 		ProgramPath: programPath,
-		IsActive:    isActive,
+		IsActive:    true,
 	}
 }
 
@@ -40,13 +40,12 @@ type Argument struct {
 
 func NewArgument(
 	argument string,
-	order, programSetId int,
-	isActive bool) Argument {
+	order, programSetId int) Argument {
 	return Argument{
 		Argument:     argument,
 		Order:        order,
 		ProgramSetId: programSetId,
-		IsActive:     isActive,
+		IsActive:     true,
 	}
 }
 
@@ -64,13 +63,12 @@ type ProgramSet struct {
 
 func NewProgramSet(
 	setId, programId, monitor int,
-	snappedPosition string,
-	isActive bool) ProgramSet {
+	snappedPosition string) ProgramSet {
 	return ProgramSet{
 		SetId:           setId,
 		ProgramId:       programId,
 		Monitor:         monitor,
 		SnappedPosition: snappedPosition,
-		IsActive:        isActive,
+		IsActive:        true,
 	}
 }

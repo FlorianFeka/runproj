@@ -5,12 +5,23 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+func RegisterControllers(app fiber.Router, db *pg.DB) {
+	RegisterSetControllers(app, db)
+	RegisterProgramControllers(app, db)
+}
 
-func RegisterSetControllers(app *fiber.App, db *pg.DB) {
-	api := app.Group("/api")
-	GetSets(api, db)
-	GetSet(api, db)
-	UpdateSet(api, db)
-	CreateSet(api, db)
-	DeleteSet(api, db)
+func RegisterSetControllers(app fiber.Router, db *pg.DB) {
+	GetSets(app, db)
+	GetSet(app, db)
+	UpdateSet(app, db)
+	CreateSet(app, db)
+	DeleteSet(app, db)
+}
+
+func RegisterProgramControllers(app fiber.Router, db *pg.DB) {
+	GetPrograms(app, db)
+	GetProgram(app, db)
+	UpdateProgram(app, db)
+	CreateProgram(app, db)
+	DeleteProgram(app, db)
 }
