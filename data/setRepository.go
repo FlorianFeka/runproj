@@ -37,9 +37,8 @@ func UpdateSet(set *Set, db *pg.DB) (orm.Result, error) {
 }
 
 func DeleteSet(id int, db *pg.DB) (orm.Result, error) {
-	set := Set{IsActive: false}
-	res, err := db.Model(&set).
-		Column("is_active").
+	res, err := db.Model(&Set{}).
+		Set("is_active = ?", false).
 		Where("? = ?", pg.Ident("id"), id).
 		Update()
 	return res, err

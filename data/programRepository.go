@@ -37,9 +37,8 @@ func UpdateProgram(program *Program, db *pg.DB) (orm.Result, error) {
 }
 
 func DeleteProgram(id int, db *pg.DB) (orm.Result, error) {
-	program := Program{IsActive: false}
-	res, err := db.Model(&program).
-		Column("is_active").
+	res, err := db.Model(&Program{}).
+		Set("is_active = ?", false).
 		Where("? = ?", pg.Ident("id"), id).
 		Update()
 	return res, err
