@@ -34,7 +34,7 @@ type Argument struct {
 	Argument     string
 	Order        int
 	ProgramSetId int
-	ProgramSet   *ProgramSet `pg:"rel:has-one"`
+	ProgramSet   *ProgramSet `pg:"rel:has-one" json:"-"`
 	IsActive     bool        `json:"-"`
 }
 
