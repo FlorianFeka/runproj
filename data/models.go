@@ -1,8 +1,8 @@
 package data
 
 type Set struct {
-	Id          int `pg:",pk"`
-	Name        string
+	Id          int           `pg:",pk"`
+	Name        string        `validate:"required"`
 	ProgramSets []*ProgramSet `pg:"rel:has-many" json:"-"`
 	IsActive    bool          `json:"-"`
 }
@@ -15,10 +15,10 @@ func NewSet(name string) Set {
 }
 
 type Program struct {
-	Id          int `pg:",pk"`
-	Name        string
-	ProgramPath string
-	IsActive    bool `json:"-"`
+	Id          int    `pg:",pk"`
+	Name        string `validate:"required"`
+	ProgramPath string `validate:"required"`
+	IsActive    bool   `json:"-"`
 }
 
 func NewProgram(name, programPath string) Program {
@@ -30,10 +30,10 @@ func NewProgram(name, programPath string) Program {
 }
 
 type Argument struct {
-	Id           int `pg:",pk"`
-	Argument     string
-	Order        int
-	ProgramSetId int
+	Id           int         `pg:",pk"`
+	Argument     string      `validate:"required"`
+	Order        int         `validate:"required"`
+	ProgramSetId int         `validate:"required"`
 	ProgramSet   *ProgramSet `pg:"rel:has-one" json:"-"`
 	IsActive     bool        `json:"-"`
 }
@@ -50,10 +50,10 @@ func NewArgument(
 }
 
 type ProgramSet struct {
-	Id              int `pg:",pk"`
-	SetId           int
-	Set             *Set `pg:"rel:has-one"`
-	ProgramId       int
+	Id              int      `pg:",pk"`
+	SetId           int      `validate:"required"`
+	Set             *Set     `pg:"rel:has-one"`
+	ProgramId       int      `validate:"required"`
 	Program         *Program `pg:"rel:has-one"`
 	Monitor         int
 	SnappedPosition string
