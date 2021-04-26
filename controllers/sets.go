@@ -62,11 +62,14 @@ func UpdateSet(api fiber.Router, db *pg.DB) {
 
 		if id != set.Id {
 			c.Response().SetStatusCode(http.StatusBadRequest)
-			return c.JSON(data.ErrorResponse{
-				FailedField: "Set.Id",
-				Tag: "required",
-				Value: "",
-			})
+			if set.Id == 0 {
+				return c.JSON(data.ErrorResponse{
+					FailedField: "Set.Id",
+					Tag: "required",
+					Value: "",
+				})
+			}
+			return nil
 		}
 		
 		_, err = data.UpdateSet(&set, db)
