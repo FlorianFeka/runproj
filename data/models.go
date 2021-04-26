@@ -1,5 +1,7 @@
 package data
 
+import "github.com/go-playground/validator"
+
 type Set struct {
 	Id          int           `pg:",pk"`
 	Name        string        `validate:"required"`
@@ -12,6 +14,28 @@ func NewSet(name string) Set {
 		Name:     name,
 		IsActive: true,
 	}
+}
+
+type ErrorResponse struct {
+	FailedField string
+	Tag         string
+	Value       string
+}
+
+func ValidateSet(set Set) []*ErrorResponse {
+	var errors []*ErrorResponse
+	validate := validator.New()
+	if err := validate.Struct(set); err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element ErrorResponse
+			element.FailedField = err.StructNamespace()
+			element.Tag = err.Tag()
+			element.Value = err.Param()
+			errors = append(errors, &element)
+		}
+	}
+
+	return errors
 }
 
 type Program struct {
@@ -27,6 +51,22 @@ func NewProgram(name, programPath string) Program {
 		ProgramPath: programPath,
 		IsActive:    true,
 	}
+}
+
+func ValidateProgram(program Program) []*ErrorResponse {
+	var errors []*ErrorResponse
+	validate := validator.New()
+	if err := validate.Struct(program); err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element ErrorResponse
+			element.FailedField = err.StructNamespace()
+			element.Tag = err.Tag()
+			element.Value = err.Param()
+			errors = append(errors, &element)
+		}
+	}
+
+	return errors
 }
 
 type Argument struct {
@@ -47,6 +87,22 @@ func NewArgument(
 		ProgramSetId: programSetId,
 		IsActive:     true,
 	}
+}
+
+func ValidateArgument(argument Argument) []*ErrorResponse {
+	var errors []*ErrorResponse
+	validate := validator.New()
+	if err := validate.Struct(argument); err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element ErrorResponse
+			element.FailedField = err.StructNamespace()
+			element.Tag = err.Tag()
+			element.Value = err.Param()
+			errors = append(errors, &element)
+		}
+	}
+
+	return errors
 }
 
 type ProgramSet struct {
@@ -71,4 +127,20 @@ func NewProgramSet(
 		SnappedPosition: snappedPosition,
 		IsActive:        true,
 	}
+}
+
+func ValidateProgramSet(programSet ProgramSet) []*ErrorResponse {
+	var errors []*ErrorResponse
+	validate := validator.New()
+	if err := validate.Struct(programSet); err != nil {
+		for _, err := range err.(validator.ValidationErrors) {
+			var element ErrorResponse
+			element.FailedField = err.StructNamespace()
+			element.Tag = err.Tag()
+			element.Value = err.Param()
+			errors = append(errors, &element)
+		}
+	}
+
+	return errors
 }
