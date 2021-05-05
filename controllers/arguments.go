@@ -53,8 +53,16 @@ func UpdateArgument(api fiber.Router, db *pg.DB) {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
 		}
+		
 		if id != argument.Id {
 			c.Response().SetStatusCode(http.StatusBadRequest)
+			if argument.Id == 0 {
+				return c.JSON(data.ErrorResponse{
+					FailedField: "Argument.Id",
+					Tag: "required",
+					Value: "",
+				})
+			}
 			return err
 		}
 		
@@ -75,6 +83,12 @@ func CreateArgument(api fiber.Router, db *pg.DB) {
 		if err != nil {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
+		}
+
+		errors := data.ValidateArgument(argument)
+		if errors != nil {
+			c.Response().SetStatusCode(http.StatusBadRequest)
+			return c.JSON(errors)
 		}
 
 		_, err = db.Model(&argument).Insert()

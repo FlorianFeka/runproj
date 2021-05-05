@@ -53,8 +53,16 @@ func UpdateProgramSet(api fiber.Router, db *pg.DB) {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
 		}
+		
 		if id != programSet.Id {
 			c.Response().SetStatusCode(http.StatusBadRequest)
+			if programSet.Id == 0 {
+				return c.JSON(data.ErrorResponse{
+					FailedField: "ProgramSet.Id",
+					Tag: "required",
+					Value: "",
+				})
+			}
 			return err
 		}
 
@@ -75,6 +83,12 @@ func CreateProgramSet(api fiber.Router, db *pg.DB) {
 		if err != nil {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
+		}
+
+		errors := data.ValidateProgramSet(programSet)
+		if errors != nil {
+			c.Response().SetStatusCode(http.StatusBadRequest)
+			return c.JSON(errors)
 		}
 
 		_, err = db.Model(&programSet).Insert()

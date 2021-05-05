@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-	"strings"
 
 	"github.com/FlorianFeka/runproj/data"
 	"github.com/go-pg/pg/v10"
@@ -54,9 +53,23 @@ func UpdateSet(api fiber.Router, db *pg.DB) {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
 		}
+
+		errors := data.ValidateSet(set)
+		if errors != nil {
+			c.Response().SetStatusCode(http.StatusBadRequest)
+			return c.JSON(errors)
+		}
+
 		if id != set.Id {
 			c.Response().SetStatusCode(http.StatusBadRequest)
-			return err
+			if set.Id == 0 {
+				return c.JSON(data.ErrorResponse{
+					FailedField: "Set.Id",
+					Tag: "required",
+					Value: "",
+				})
+			}
+			return nil
 		}
 		
 		_, err = data.UpdateSet(&set, db)
@@ -73,11 +86,17 @@ func CreateSet(api fiber.Router, db *pg.DB) {
 	api.Post("/sets", func(c *fiber.Ctx) error {
 		set := data.NewSet("")
 		err := json.Unmarshal(c.Request().Body(), &set)
-		if err != nil ||  strings.TrimSpace(set.Name) == "" {
+		if err != nil {
 			c.Response().SetStatusCode(http.StatusBadRequest)
 			return err
 		}
 
+		errors := data.ValidateSet(set)
+		if errors != nil {
+			c.Response().SetStatusCode(http.StatusBadRequest)
+			return c.JSON(errors)
+		}
+		
 		_, err = db.Model(&set).Insert()
 		if err != nil {
 			c.Response().SetStatusCode(http.StatusInternalServerError)
