@@ -240,25 +240,17 @@ func PopulateTestData(db *pg.DB) {
 		{
 			Argument:     "--new-window",
 			ProgramSetId: timeoFlutterChrome.Id,
+			Order: 1,
 			IsActive:     true,
 		},
 		{
 			Argument:     "https://github.com/FlorianFeka/timeo-app",
 			ProgramSetId: timeoFlutterChrome.Id,
+			Order: 2,
 			IsActive:     true,
 		},
 		{
 			Argument:     "D:\\2_Projekte\\Javascript\\Angular\\timeo",
-			ProgramSetId: timeoAngularVsCode.Id,
-			IsActive:     true,
-		},
-		{
-			Argument:     "--new-window",
-			ProgramSetId: timeoAngularVsCode.Id,
-			IsActive:     true,
-		},
-		{
-			Argument:     "https://github.com/FlorianFeka/timeo",
 			ProgramSetId: timeoAngularVsCode.Id,
 			IsActive:     true,
 		}}
