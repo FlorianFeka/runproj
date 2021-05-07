@@ -25,6 +25,11 @@ type Program struct {
 }
 
 func ExecuteSet(set *data.Set) error {
+	if isInDockerContainer() {
+		err := executeFromDockerContainer()
+		return err
+	}
+
 	json, err := json.Marshal(&set);
 	if err != nil {
 		return err
@@ -97,4 +102,16 @@ func GetConfigContent() []Set {
 
 	json.Unmarshal(byteConf, &sets)
 	return sets
+}
+
+func executeFromDockerContainer() error {
+	fmt.Println("Execute from container!")
+	return nil
+}
+
+func isInDockerContainer() bool {
+	if _, err := os.Stat("/.dockerenv"); err == nil {
+		return true
+	}
+	return false
 }
