@@ -9,8 +9,8 @@ on which monitor to open the program and on which side to [snap](https://support
 ### ToDo
 
 -   [x] Set a database storage
--   [ ] API endpoints for data
--   [ ] API endpoints for execution
+-   [x] API endpoints for data
+-   [x] API endpoints for execution
 -   [ ] Add swagger
 -   [x] Properly dockerize application
 -   [ ] Create phone app to communicate with api
