@@ -10,6 +10,7 @@ func RegisterControllers(app fiber.Router, db *pg.DB) {
 	RegisterProgramControllers(app, db)
 	RegisterProgramSetControllers(app, db)
 	RegisterArgumentControllers(app, db)
+	RegisterSysteControllers(app, db);
 }
 
 func RegisterSetControllers(app fiber.Router, db *pg.DB) {
@@ -42,4 +43,8 @@ func RegisterArgumentControllers(app fiber.Router, db *pg.DB){
 	UpdateArgument(app, db)
 	CreateArgument(app, db)
 	DeleteArgument(app, db)
+}
+
+func RegisterSysteControllers(app fiber.Router, db *pg.DB) {
+	ExecuteSet(app, db);
 }

@@ -29,6 +29,32 @@ func GetSet(id int, db *pg.DB) (*Set, error) {
 		return set, nil
 }
 
+func GetFullSet(id int, db *pg.DB) (*Set, error) {
+		set := &Set{}
+		err := db.Model(set).
+			Where("set.is_active = ?", true).
+			Where("? = ?", pg.Ident("set.id"), id).
+			Relation("ProgramSets").
+			Select()
+		if err != nil {
+			return &Set{}, err
+		}
+
+		for _, programSet := range set.ProgramSets {
+			err = db.Model(programSet).
+				Where("program_set.is_active = ?", true).
+				Where("? = ?", pg.Ident("program_set.id"), programSet.Id).
+				Relation("Program").
+				Relation("Arguments").
+				Select()
+			if err != nil {
+				return &Set{}, err
+			}
+		}
+
+		return set, nil
+}
+
 func UpdateSet(set *Set, db *pg.DB) (orm.Result, error) {
 	res, err := db.Model(set).
 		Where("? = ?", pg.Ident("id"), set.Id).

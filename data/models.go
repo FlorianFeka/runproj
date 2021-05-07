@@ -5,7 +5,7 @@ import "github.com/go-playground/validator"
 type Set struct {
 	Id          int           `pg:",pk"`
 	Name        string        `validate:"required"`
-	ProgramSets []*ProgramSet `pg:"rel:has-many" json:"-"`
+	ProgramSets []*ProgramSet `pg:"rel:has-many" json:",omitempty"`
 	IsActive    bool          `json:"-"`
 }
 

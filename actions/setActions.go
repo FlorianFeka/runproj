@@ -6,7 +6,9 @@ import (
 	"io/ioutil"
 	"os"
 	"os/exec"
+	"sort"
 
+	"github.com/FlorianFeka/runproj/data"
 	"github.com/FlorianFeka/runproj/utils"
 )
 
@@ -22,10 +24,43 @@ type Program struct {
 	Arguments []string `json:"arguments"`
 }
 
+func ExecuteSet(set *data.Set) error {
+	json, err := json.Marshal(&set);
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Execute set: \n%s", json)
+	for _, programSet := range set.ProgramSets {
+		cmd := exec.Command(
+			programSet.Program.ProgramPath,
+			GetArguments(programSet.Arguments)...,
+		)
+		if err := cmd.Run(); err != nil {
+			return err;
+		}
+	}
+
+	return nil
+}
+
+func GetArguments(arguments []*data.Argument) []string {
+	var argStrings []string
+	sort.SliceStable(arguments, func(i, j int) bool {
+		return arguments[i].Order < arguments[j].Order
+	})
+
+	for _, argument := range arguments {
+		argStrings = append(argStrings, argument.Argument)
+	}
+
+	return argStrings;
+}
+
 // ExecuteSelectedSets executes a set of selected sets
 func ExecuteSelectedSets(sets []Set, selectedSets []string) {
 	for _, set := range sets {
-		if _, exists := utils.Find(selectedSets, set.Name); exists == false {
+		if _, exists := utils.Find(selectedSets, set.Name); !exists {
 			continue
 		}
 		fmt.Println(set.Name)
