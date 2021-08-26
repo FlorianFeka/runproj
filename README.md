@@ -11,6 +11,7 @@ on which monitor to open the program and on which side to [snap](https://support
 -   [x] Set a database storage
 -   [x] API endpoints for data
 -   [x] API endpoints for execution
+-   [ ] enable execution within docker container
 -   [ ] Add swagger
 -   [x] Properly dockerize application
 -   [ ] Create phone app to communicate with api
