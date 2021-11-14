@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"sort"
+	"syscall"
 
 	"github.com/FlorianFeka/runproj/data"
 	"github.com/FlorianFeka/runproj/utils"
@@ -105,6 +106,11 @@ func GetConfigContent() []Set {
 }
 
 func executeFromDockerContainer() error {
+	syscall.Mkfifo("tmp", 0666)
+	_, err := os.OpenFile("tmp", os.O_RDWR, os.ModeNamedPipe)
+	if err != nil {
+		return err
+	}
 	fmt.Println("Execute from container!")
 	return nil
 }

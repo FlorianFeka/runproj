@@ -14,3 +14,4 @@ on which monitor to open the program and on which side to [snap](https://support
 -   [ ] Add swagger
 -   [x] Properly dockerize application
 -   [ ] Create phone app to communicate with api
+-   [ ] Add CI/CD Jenkins
