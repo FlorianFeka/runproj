@@ -3,21 +3,18 @@ pipeline {
     stages {
         stage('Build') { 
             steps {
-                ls
                 echo "Build echo"
                 echo "lil change"
             }
         }
         stage('Test') { 
             steps {
-                ls
                 echo "Test echo"
                 echo "lil change"
             }
         }
         stage('Deploy') { 
             steps {
-                ls
                 echo "Deploy echo"
                 echo "lil change"
             }
