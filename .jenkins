@@ -5,6 +5,7 @@ pipeline {
             steps {
                 sh 'docker-compose --version'
                 echo "Build echo"
+                echo "lil change"
             }
         }
         stage('Test') { 
