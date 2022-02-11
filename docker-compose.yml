@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.3"
 services:
     runproj_database:
         image: postgres
@@ -6,8 +6,6 @@ services:
             POSTGRES_USER: runproj
             POSTGRES_PASSWORD: mysecretpassword
             POSTGRES_DB: runproj
-        ports:
-            - "5432:5432"
 
     runproj_api:
         build: .
